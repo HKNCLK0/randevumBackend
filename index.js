@@ -29,13 +29,14 @@ app.use(function (req, res, next) {
   );
   next();
 });
-mongoose.connect(process.env.CONNECTION_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-() => {
-  console.log("connected to DB");
-};
+mongoose.connect(
+  process.env.CONNECTION_URL,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  console.log("Connected to MongoDB!!!")
+);
 
 app.get("/", (req, res) => {
   res.status(400).json({ message: "Access Denied" });
@@ -57,6 +58,6 @@ app.use("/auth", authRouter);
 //Reset Password
 app.use("/password-reset", passwordRouter);
 
-app.listen(5001, "0.0.0.0", () => {
+app.listen(8001, "0.0.0.0", () => {
   console.log("Server Started");
 });
