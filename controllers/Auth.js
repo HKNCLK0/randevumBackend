@@ -73,77 +73,58 @@ export const loginWithEmailAndPassword = (req, res) => {
 };
 
 export const registerWithEmailAndPassword = async (req, res) => {
-  const {
-    name,
-    surname,
-    email,
-    password,
-    phone,
-    birthDate,
-    address,
-    district,
-    province,
-    checkedKVKK,
-    checkedAnnouncement,
-  } = req.body;
-
+  const { name, surname, email, password, checkedKVKK, checkedAnnouncement } =
+    req.body;
   //Check for existing user
   const user = await User.findOne({ email: email });
   if (user) {
-    console.log(user);
     res.status(400).json({ error: "User already exist" });
   } else {
-    const newUser = await User.create({
-      name,
-      surname,
-      email,
-      password,
-      phone,
-      birthDate,
-      address,
-      district,
-      province,
-      checkedKVKK,
-      checkedAnnouncement,
-    });
+    if (!name || !surname || !email || !password || !checkedKVKK) {
+      res.status(400).json("please check all fields");
+    } else {
+      const newUser = await User.create({
+        name,
+        surname,
+        email,
+        password,
+        checkedKVKK,
+        checkedAnnouncement,
+      });
 
-    //Generate salt & hashed password
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(newUser.password, salt, (err, hash) => {
-        if (err) throw err;
-        newUser.password = hash;
-        newUser.save().then((user) => {
-          jwt.sign(
-            {
-              id: user._id,
-            },
-            JWT_SECRET,
-            { expiresIn: 3600 },
-            (err, token) => {
-              if (err) throw err;
-              res.json({
-                token,
-                user: {
-                  id: user._id,
-                  email: user.email,
-                  password: user.password,
-                  name: user.name,
-                  surname: user.surname,
-                  phone: user.phone,
-                  birthDate: user.birthDate,
-                  address: user.address,
-                  district: user.district,
-                  province: user.province,
-                  checkedKVKK: user.checkedKVKK,
-                  checkedAnnouncement: user.checkedAnnouncement,
-                },
-                status: "ok",
-              });
-            }
-          );
+      //Generate salt & hashed password
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.password = hash;
+          newUser.save().then((user) => {
+            jwt.sign(
+              {
+                id: user._id,
+              },
+              JWT_SECRET,
+              { expiresIn: 3600 },
+              (err, token) => {
+                if (err) throw err;
+                res.json({
+                  token,
+                  user: {
+                    id: user._id,
+                    email: user.email,
+                    password: user.password,
+                    name: user.name,
+                    surname: user.surname,
+                    checkedKVKK: user.checkedKVKK,
+                    checkedAnnouncement: user.checkedAnnouncement,
+                  },
+                  status: "ok",
+                });
+              }
+            );
+          });
         });
       });
-    });
+    }
   }
 };
 
