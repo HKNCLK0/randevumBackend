@@ -25,7 +25,6 @@ export const getMeetsByID = async (req, res) => {
   try {
     const params = req.params.id;
     const meetFindByID = await Meets.find({ userID: params });
-    console.log(params);
     res.status(200).json(meetFindByID);
   } catch (error) {
     res.status(400).json({ error: error });
@@ -53,7 +52,7 @@ export const createMeet = async (req, res) => {
     sgMail
       .send(msg)
       .then(() => {
-        console.log("Email sent");
+        console.log("Meet Created Mail Send");
       })
       .catch((error) => {
         console.error(error);
@@ -68,5 +67,37 @@ export const createMeet = async (req, res) => {
     res.status(200).json({ status: "ok", newMeet });
   } catch (error) {
     res.status(400).json(error);
+  }
+};
+
+export const deleteMeetByID = async (req, res) => {
+  const { userID } = req.body;
+  const params = req.params.id;
+  try {
+    const user = await User.findById({ _id: userID });
+    const deletedMeet = await Meets.findByIdAndRemove({ _id: params });
+    const msg = {
+      to: `${user.email}`, // Change to your recipient
+      from: "noreply@em492.randevum.tech", // Change to your verified sender
+      subject: "Randevu Detayları",
+      html: `Sayın ${user.name} ${user.surname}; ${deletedMeet.date} tarihli , ${deletedMeet.clock} saatli ${deletedMeet.businessName} randevunuz iptal edilmiştir.`,
+    };
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Meet Delete Mail Send");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    const client = new twilio(accountSid, authToken);
+    client.messages.create({
+      to: user.phone,
+      from: "+12183947229",
+      body: `Sayın ${user.name} ${user.surname}; ${date} tarihli , ${clock} saatli ${businessName} randevunuz oluşturulmuştur. Erteleme veya iptal için sitemizi ziyaret edin!`,
+    });
+    res.status(200).json(meet);
+  } catch (error) {
+    res.status(404).json(error);
   }
 };

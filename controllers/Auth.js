@@ -73,14 +73,21 @@ export const loginWithEmailAndPassword = (req, res) => {
 };
 
 export const registerWithEmailAndPassword = async (req, res) => {
-  const { name, surname, email, password, checkedKVKK, checkedAnnouncement } =
-    req.body;
+  const {
+    name,
+    surname,
+    email,
+    password,
+    phone,
+    checkedKVKK,
+    checkedAnnouncement,
+  } = req.body;
   //Check for existing user
   const user = await User.findOne({ email: email });
   if (user) {
     res.status(400).json({ error: "User already exist" });
   } else {
-    if (!name || !surname || !email || !password || !checkedKVKK) {
+    if (!name || !surname || !email || !password || !phone || !checkedKVKK) {
       res.status(400).json("please check all fields");
     } else {
       const newUser = await User.create({
@@ -88,6 +95,7 @@ export const registerWithEmailAndPassword = async (req, res) => {
         surname,
         email,
         password,
+        phone,
         checkedKVKK,
         checkedAnnouncement,
       });
@@ -114,6 +122,7 @@ export const registerWithEmailAndPassword = async (req, res) => {
                     password: user.password,
                     name: user.name,
                     surname: user.surname,
+                    phone: user.phone,
                     checkedKVKK: user.checkedKVKK,
                     checkedAnnouncement: user.checkedAnnouncement,
                   },
@@ -188,25 +197,27 @@ export const checkVerifyCode = async (req, res) => {
 };
 
 export const sendVerificationSMS = async (req, res) => {
-  const { phoneNumber } = req.body;
+  console.log("Verification SMS Send");
+  const { userID } = req.body;
   const code = generateCode();
-  const user = await User.findOne({ phone: phoneNumber });
-  if (!user) {
-    res.status(404).json({ error: "Numara Bulunamadı" });
-  } else {
-    const client = new twilio(accountSid, authToken);
-    user.smsVerificationCode = code;
-    user.save().then((result) => {
-      client.messages
-        .create({
-          to: phoneNumber,
-          from: "+12183947229",
-          body: `Numaranızı Doğrulamak İçin Kodunuz : ${code}`,
-        })
-        .then((message) => res.status(200).json({ message: message.sid }))
-        .catch((err) => res.status(400).json({ error: err }));
-    });
-  }
+  User.findOne({ _id: userID }).then((user) => {
+    if (!user) {
+      res.status(422).json({ err: "user dont exist with that phone number" });
+    } else {
+      const client = new twilio(accountSid, authToken);
+      user.smsVerificationCode = code;
+      user.save().then((result) => {
+        client.messages
+          .create({
+            to: user.phone,
+            from: "+12183947229",
+            body: `Numaranızı Doğrulamak İçin Kodunuz : ${code}`,
+          })
+          .then((message) => res.status(200).json({ message: message.sid }))
+          .catch((err) => res.status(400).json({ error: err }));
+      });
+    }
+  });
 };
 
 export const checkSMScode = async (req, res) => {
@@ -214,17 +225,11 @@ export const checkSMScode = async (req, res) => {
   const user = await User.findOne({ _id: userID });
   if (user.smsVerificationCode === smsCode) {
     user.phoneVerification = true;
-    user.save().then((result) => {
-      const client = new twilio(accountSid, authToken);
-      client.messages
-        .create({
-          to: phoneNumber,
-          from: "+12183947229",
-          body: `Numaranızı Doğrulamak İçin Kodunuz : ${code}`,
-        })
-        .then((message) => console.log("message send"))
-        .catch((err) => console.log(err));
-    });
+    user
+      .save()
+      .then((message) => console.log("Phone Verified"))
+      .catch((err) => console.log(err));
+
     res.status(200).json({ status: "ok" });
   } else {
     res.status(404).json({ message: "wrong verify code " });

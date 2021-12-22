@@ -1,5 +1,10 @@
 import express from "express";
-import { getMeets, getMeetsByID, createMeet } from "../controllers/Meet.js";
+import {
+  getMeets,
+  getMeetsByID,
+  createMeet,
+  deleteMeetByID,
+} from "../controllers/Meet.js";
 
 const router = express.Router();
 
@@ -8,5 +13,6 @@ const router = express.Router();
 router.get("/", getMeets);
 router.get("/:id", getMeetsByID);
 router.post("/", createMeet);
+router.post("/:id", deleteMeetByID);
 
 export default router;

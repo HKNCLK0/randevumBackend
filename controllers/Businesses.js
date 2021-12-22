@@ -34,7 +34,6 @@ export const createBusinesses = async (req, res) => {
 
 export const getBusinessesByID = async (req, res) => {
   const params = req.params.id;
-  console.log(params);
   try {
     const business = await Businesses.findOne({ _id: params });
     res.status(200).json(business);
