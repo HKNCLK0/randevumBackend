@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import sgMail from "@sendgrid/mail";
 
+//TODO:Bearer Token Yapılacak
 //Routes Import
 import authRouter from "./routes/Auth.js";
 import userRoute from "./routes/User.js";
