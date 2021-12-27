@@ -3,14 +3,12 @@ import mongoose from "mongoose";
 const businessesModel = mongoose.Schema({
   businessName: String,
   businessCategory: String,
-  businessPoint: String,
-  businessFounder: String,
-  businessImage: String,
-  businessTaxNumber: String,
-  businessRegisteryNumber: String,
-  businessProvince: String,
-  businessDistrict: String,
+  businessEmail: String,
+  businessPassword: String,
+  businessPhone: String,
   businessAddress: String,
+  businessCountry: String,
+  businessIlce: String,
 });
 
 const Businesses = mongoose.model("Businesses", businessesModel);
