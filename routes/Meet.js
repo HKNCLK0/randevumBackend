@@ -4,6 +4,7 @@ import {
   getMeetsByID,
   createMeet,
   deleteMeetByID,
+  getMeetsByBusinessID,
 } from "../controllers/Meet.js";
 
 const router = express.Router();
@@ -12,6 +13,7 @@ const router = express.Router();
 
 router.get("/", getMeets);
 router.get("/:id", getMeetsByID);
+router.get("/business/:id", getMeetsByBusinessID);
 router.post("/", createMeet);
 router.post("/:id", deleteMeetByID);
 

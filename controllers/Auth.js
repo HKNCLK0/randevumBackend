@@ -32,7 +32,6 @@ export const loginWithEmailAndPassword = (req, res) => {
         {
           id: user._id,
           email: user.email,
-          password: user.password,
           name: user.name,
           surname: user.surname,
           phone: user.phone,
@@ -40,8 +39,6 @@ export const loginWithEmailAndPassword = (req, res) => {
           address: user.address,
           district: user.district,
           province: user.province,
-          checkedKVKK: user.checkedKVKK,
-          checkedAnnouncement: user.checkedAnnouncement,
           userVerification: user.userVerification,
         },
         JWT_SECRET,
@@ -53,7 +50,6 @@ export const loginWithEmailAndPassword = (req, res) => {
               token,
               id: user._id,
               email: user.email,
-              password: user.password,
               name: user.name,
               surname: user.surname,
               phone: user.phone,
@@ -61,8 +57,6 @@ export const loginWithEmailAndPassword = (req, res) => {
               address: user.address,
               district: user.district,
               province: user.province,
-              checkedKVKK: user.checkedKVKK,
-              checkedAnnouncement: user.checkedAnnouncement,
               userVerification: user.userVerification,
             },
           });
@@ -119,12 +113,9 @@ export const registerWithEmailAndPassword = async (req, res) => {
                   user: {
                     id: user._id,
                     email: user.email,
-                    password: user.password,
                     name: user.name,
                     surname: user.surname,
                     phone: user.phone,
-                    checkedKVKK: user.checkedKVKK,
-                    checkedAnnouncement: user.checkedAnnouncement,
                   },
                   status: "ok",
                 });

@@ -12,6 +12,7 @@ import passwordRouter from "./routes/Password.js";
 import categoryRoute from "./routes/Category.js";
 import meetRoute from "./routes/Meet.js";
 import businessesRouter from "./routes/Businesses.js";
+import supportRouter from "./routes/Support.js";
 
 const app = express();
 dotenv.config();
@@ -58,6 +59,9 @@ app.use("/auth", authRouter);
 
 //Reset Password
 app.use("/password-reset", passwordRouter);
+
+//Create Support
+app.use("/support", supportRouter);
 
 app.listen(8001, "0.0.0.0", () => {
   console.log("Server Started");

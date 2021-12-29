@@ -6,6 +6,7 @@ const meetSchema = mongoose.Schema({
   businessName: String,
   date: String,
   clock: String,
+  userData: Array,
 });
 
 const Meets = mongoose.model("Meets", meetSchema);

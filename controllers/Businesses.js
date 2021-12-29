@@ -81,7 +81,6 @@ export const businessLogin = (req, res) => {
           {
             id: business._id,
             businessEmail: business.businessEmail,
-            businessPassword: business.businessPassword,
           },
           JWT_SECRET,
           { expiresIn: 3600 },
@@ -92,7 +91,6 @@ export const businessLogin = (req, res) => {
                 token,
                 id: business._id,
                 businessEmail: business.businessEmail,
-                businessPassword: business.password,
               },
             });
           }

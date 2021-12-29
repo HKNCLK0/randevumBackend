@@ -31,8 +31,18 @@ export const getMeetsByID = async (req, res) => {
   }
 };
 
+export const getMeetsByBusinessID = async (req, res) => {
+  try {
+    const params = req.params.id;
+    const meetFindByID = await Meets.find({ businessID: params });
+    res.status(200).json(meetFindByID);
+  } catch (error) {
+    res.status(400).json({ error: error });
+  }
+};
+
 export const createMeet = async (req, res) => {
-  const { userID, businessID, businessName, date, clock } = req.body;
+  const { userID, businessID, businessName, date, clock, userData } = req.body;
   try {
     const user = await User.findOne({ _id: userID });
 
@@ -42,6 +52,7 @@ export const createMeet = async (req, res) => {
       businessName,
       date,
       clock,
+      userData,
     });
     const msg = {
       to: `${user.email}`, // Change to your recipient
