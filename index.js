@@ -13,6 +13,7 @@ import categoryRoute from "./routes/Category.js";
 import meetRoute from "./routes/Meet.js";
 import businessesRouter from "./routes/Businesses.js";
 import supportRouter from "./routes/Support.js";
+import commentRouter from "./routes/Comments.js";
 
 const app = express();
 dotenv.config();
@@ -62,6 +63,9 @@ app.use("/password-reset", passwordRouter);
 
 //Create Support
 app.use("/support", supportRouter);
+
+//Comments
+app.use("/comments", commentRouter);
 
 app.listen(8001, "0.0.0.0", () => {
   console.log("Server Started");
