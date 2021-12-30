@@ -49,6 +49,16 @@ export const getBusinessesByID = async (req, res) => {
   }
 };
 
+export const getBusinessesByCategoryName = async (req, res) => {
+  const { categoryName } = req.body;
+  try {
+    const business = await Businesses.find({ businessCategory: categoryName });
+    res.status(200).json(business);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+};
+
 export const getAllBusinesses = async (req, res) => {
   try {
     const businesses = await Businesses.find();

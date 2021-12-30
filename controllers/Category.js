@@ -12,7 +12,7 @@ export const getCategory = async (req, res) => {
 export const getCategoryByID = async (req, res) => {
   try {
     const params = req.params.id;
-    const filterCategoryByID = await Category.findOne({ _id: params });
+    const filterCategoryByID = await Category.findOne({ urlParams: params });
     res.status(200).json(filterCategoryByID);
     console.log(params);
   } catch (error) {
@@ -23,11 +23,12 @@ export const getCategoryByID = async (req, res) => {
 };
 
 export const createCategory = async (req, res) => {
-  const { categoryName, imageURL } = req.body;
+  const { categoryName, imageURL, urlParams } = req.body;
   try {
     const newCategory = await Category.create({
       categoryName,
       imageURL,
+      urlParams,
     });
     res.status(200).json(newCategory);
   } catch (error) {
