@@ -29,7 +29,7 @@ export const passwordReset = async (req, res) => {
           subject: "Şifreni Sıfırla",
           text: "Şifreni Sıfırla",
           html: `
-          <h1>Şifreni sıfırlamak için <a href="http://localhost:5000/login/reset-password/${token}">buraya</a> tıkla</h1>
+          <h1>Şifreni sıfırlamak için <a href="http://localhost:5000/login/forgot-password/${token}">buraya</a> tıkla</h1>
           `,
         };
         sgMail
