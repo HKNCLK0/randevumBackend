@@ -61,21 +61,14 @@ export const loginWithEmailAndPassword = (req, res) => {
 };
 
 export const registerWithEmailAndPassword = async (req, res) => {
-  const {
-    name,
-    surname,
-    email,
-    password,
-    phone,
-    checkedKVKK,
-    checkedAnnouncement,
-  } = req.body;
+  const { name, surname, email, password, phone, KVKK, announcement } =
+    req.body;
   //Check for existing user
   const user = await User.findOne({ email: email });
   if (user) {
-    res.status(400).json({ error: "User already exist" });
+    res.status(400).json("Bu E-Posta Adresi Kullanılamaz!");
   } else {
-    if (!name || !surname || !email || !password || !phone || !checkedKVKK) {
+    if (!name || !surname || !email || !password || !phone || !KVKK) {
       res.status(400).json("please check all fields");
     } else {
       const newUser = await User.create({
@@ -84,8 +77,8 @@ export const registerWithEmailAndPassword = async (req, res) => {
         email,
         password,
         phone,
-        checkedKVKK,
-        checkedAnnouncement,
+        KVKK,
+        announcement,
       });
 
       //Generate salt & hashed password
@@ -110,6 +103,8 @@ export const registerWithEmailAndPassword = async (req, res) => {
                     name: user.name,
                     surname: user.surname,
                     phone: user.phone,
+                    emailVerification: user.userVerification,
+                    phoneVerification: user.phoneVerification,
                   },
                   status: "ok",
                 });
