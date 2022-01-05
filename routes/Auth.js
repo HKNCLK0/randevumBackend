@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+//TODO:Router URL'leri Düzenlenecek
+
 import {
   checkSMScode,
   checkVerifyCode,

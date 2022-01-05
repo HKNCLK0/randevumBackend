@@ -87,9 +87,30 @@ export const registerWithEmailAndPassword = async (req, res) => {
           if (err) throw err;
           newUser.password = hash;
           newUser.save().then((user) => {
+            const msg = {
+              to: `${user.email}`, // Change to your recipient
+              from: "noreply@em492.randevum.tech", // Change to your verified sender
+              subject: "Randevum'a Hoşgeldin",
+              text: "Randevum'a Hoşgeldin",
+              html: "<strong>Randevum'a Hoşgeldin!</strong>",
+            };
+            sgMail
+              .send(msg)
+              .then(() => {
+                console.log("Welcome Mail Send");
+              })
+              .catch((error) => {
+                console.error(error);
+              });
             jwt.sign(
               {
                 id: user._id,
+                userEmail: user.email,
+                userName: user.name,
+                userSurname: user.surname,
+                userPhone: user.phone,
+                userEmailVerification: user.userVerification,
+                userPhoneVerification: user.phoneVerification,
               },
               JWT_SECRET,
               { expiresIn: 3600 },
@@ -99,12 +120,12 @@ export const registerWithEmailAndPassword = async (req, res) => {
                   token,
                   user: {
                     id: user._id,
-                    email: user.email,
-                    name: user.name,
-                    surname: user.surname,
-                    phone: user.phone,
-                    emailVerification: user.userVerification,
-                    phoneVerification: user.phoneVerification,
+                    userEmail: user.email,
+                    userName: user.name,
+                    userSurname: user.surname,
+                    userPhone: user.phone,
+                    userEmailVerification: user.userVerification,
+                    userPhoneVerification: user.phoneVerification,
                   },
                   status: "ok",
                 });
@@ -155,24 +176,9 @@ export const checkVerifyCode = async (req, res) => {
   if (user.verificationCode === verificationCode) {
     user.userVerification = true;
     const newUser = user.save();
-    const msg = {
-      to: `${user.email}`, // Change to your recipient
-      from: "noreply@em492.randevum.tech", // Change to your verified sender
-      subject: "Randevum'a Hoşgeldin",
-      text: "Randevum'a Hoşgeldin",
-      html: "<strong>Randevum'a Hoşgeldin!</strong>",
-    };
-    sgMail
-      .send(msg)
-      .then(() => {
-        console.log("Email sent");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
     res.status(200).json({ status: "ok" });
   } else {
-    res.status(404).json({ message: "wrong verify code " });
+    res.status(404).json("Doğrulama Kodu Hatalı!");
   }
 };
 
@@ -207,11 +213,9 @@ export const checkSMScode = async (req, res) => {
     user.phoneVerification = true;
     user
       .save()
-      .then((message) => console.log("Phone Verified"))
-      .catch((err) => console.log(err));
-
-    res.status(200).json({ status: "ok" });
+      .then((message) => res.status(200).json("Telefon Numarası Doğrulandı"))
+      .catch((err) => res.status(400).json(err));
   } else {
-    res.status(404).json({ message: "wrong verify code " });
+    res.status(404).json("Hatalı Doğrulama Kodu");
   }
 };
