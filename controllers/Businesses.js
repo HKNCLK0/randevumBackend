@@ -43,9 +43,22 @@ export const getBusinessesByID = async (req, res) => {
   const params = req.params.id;
   try {
     const business = await Businesses.findOne({ _id: params });
-    res.status(200).json(business);
+    res.status(200).json({
+      businessID: business._id,
+      businessName: business.businessName,
+      businessCategory: business.businessCategory,
+      businessEmail: business.businessEmail,
+      businessEmail: business.businessEmail,
+      businessAddress: business.businessAddress,
+      businessCountry: business.businessCountry,
+      businessIlce: business.businessIlce,
+      businessImage: business.businessImage,
+      businessMeetDates: business.businessMeetDates,
+      businessMeetTimes: business.businessMeetTimes,
+      businessPoint: business.businessPoint,
+    });
   } catch (error) {
-    res.status(404).json({ error });
+    res.status(404).json(error);
   }
 };
 

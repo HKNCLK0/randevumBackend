@@ -9,6 +9,10 @@ const businessesModel = mongoose.Schema({
   businessAddress: String,
   businessCountry: String,
   businessIlce: String,
+  businessImage: String,
+  businessMeetDates: Array,
+  businessMeetTimes: Array,
+  businessPoint: String,
 });
 
 const Businesses = mongoose.model("Businesses", businessesModel);
