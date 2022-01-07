@@ -69,12 +69,13 @@ export const createMeet = async (req, res) => {
         console.error(error);
       });
     const client = new twilio(accountSid, authToken);
-    client.messages.create({
-      to: user.phone,
-      from: "+12183947229",
-      body: `Sayın ${user.name} ${user.surname}; ${date} tarihli , ${clock} saatli ${businessName} randevunuz oluşturulmuştur. Erteleme veya iptal için sitemizi ziyaret edin!`,
-    });
-
+    client.messages
+      .create({
+        to: user.phone,
+        from: "+12183947229",
+        body: `Sayın ${user.name} ${user.surname}; ${date} tarihli , ${clock} saatli ${businessName} randevunuz oluşturulmuştur. Erteleme veya iptal için sitemizi ziyaret edin!`,
+      })
+      .then((message) => console.log(message.sid));
     res.status(200).json({ status: "ok", newMeet });
   } catch (error) {
     res.status(400).json(error);
