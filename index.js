@@ -16,6 +16,7 @@ import meetRoute from "./routes/Meet.js";
 import businessesRouter from "./routes/Businesses.js";
 import supportRouter from "./routes/Support.js";
 import commentRouter from "./routes/Comments.js";
+import notificationsRouter from "./routes/Notifications.js";
 
 const app = express();
 dotenv.config();
@@ -68,6 +69,9 @@ app.use("/support", supportRouter);
 
 //Comments
 app.use("/comments", commentRouter);
+
+//Notifications
+app.use("/notifications", notificationsRouter);
 
 app.listen(8001, "0.0.0.0", () => {
   console.log("Server Started");
