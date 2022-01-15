@@ -33,3 +33,7 @@ export const deleteNotifications = async (req, res) => {
     res.status(400).json("Silme Hatası");
   }
 };
+
+export const sendNotificationAllUsers = async (req, res) => {
+  const { message } = req.body;
+};
