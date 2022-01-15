@@ -106,10 +106,20 @@ export const deleteMeetByID = async (req, res) => {
     client.messages.create({
       to: user.phone,
       from: "+12183947229",
-      body: `Sayın ${user.name} ${user.surname}; ${date} tarihli , ${clock} saatli ${businessName} randevunuz oluşturulmuştur. Erteleme veya iptal için sitemizi ziyaret edin!`,
+      body: `Sayın ${user.name} ${user.surname}; ${deletedMeet.date} tarihli , ${deletedMeet.clock} saatli ${deletedMeet.businessName} randevunuz iptal edilmiştir.`,
     });
-    res.status(200).json(meet);
+    res.status(200).json("Meet Successfully Deleted");
   } catch (error) {
     res.status(404).json(error);
+  }
+};
+
+export const getMeetByMeetID = async (req, res) => {
+  try {
+    const params = req.params.id;
+    const meetFindByMeetID = await Meets.findById({ _id: params });
+    res.status(200).json(meetFindByMeetID);
+  } catch (error) {
+    res.status(400).json({ error: error });
   }
 };

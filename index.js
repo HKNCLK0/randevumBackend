@@ -4,6 +4,10 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import sgMail from "@sendgrid/mail";
 
+import jwt from "jsonwebtoken";
+
+const secretKey = process.env.JWT;
+
 //TODO:Bearer Token Yapılacak
 
 //TODO:User Model İsimleri Düzenlenecek
