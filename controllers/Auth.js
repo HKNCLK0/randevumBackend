@@ -39,7 +39,7 @@ export const loginWithEmailAndPassword = (req, res) => {
           userPhoneVerification: user.phoneVerification,
         },
         JWT_SECRET,
-        { expiresIn: 3600 },
+        { expiresIn: "30m" },
         (err, token) => {
           if (err) throw err;
           res.json({

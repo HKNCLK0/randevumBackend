@@ -4,10 +4,6 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import sgMail from "@sendgrid/mail";
 
-import jwt from "jsonwebtoken";
-
-const secretKey = process.env.JWT;
-
 //TODO:Bearer Token Yapılacak
 
 //TODO:User Model İsimleri Düzenlenecek
@@ -21,6 +17,8 @@ import businessesRouter from "./routes/Businesses.js";
 import supportRouter from "./routes/Support.js";
 import commentRouter from "./routes/Comments.js";
 import notificationsRouter from "./routes/Notifications.js";
+import plansRouter from "./routes/Plan.js";
+import { middleware } from "./middleware/Middleware.js";
 
 const app = express();
 dotenv.config();
@@ -48,8 +46,8 @@ mongoose.connect(
   console.log("Connected to MongoDB!!!")
 );
 
-app.get("/", (req, res) => {
-  res.status(400).json({ message: "Access Denied" });
+app.get("/", middleware, (req, res) => {
+  res.status(400).json({ message: "Hello Randevum Backend" });
 });
 
 //Category
@@ -76,6 +74,9 @@ app.use("/comments", commentRouter);
 
 //Notifications
 app.use("/notifications", notificationsRouter);
+
+//Plans
+app.use("/plans", plansRouter);
 
 app.listen(8001, "0.0.0.0", () => {
   console.log("Server Started");

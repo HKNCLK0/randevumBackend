@@ -51,6 +51,7 @@ export const getBusinessesByID = async (req, res) => {
       businessEmail: business.businessEmail,
       businessAddress: business.businessAddress,
       businessCountry: business.businessCountry,
+      businessPlan: business.businessPlanID,
       businessIlce: business.businessIlce,
       businessImage: business.businessImage,
       businessMeetDates: business.businessMeetDates,
@@ -104,6 +105,7 @@ export const businessLogin = (req, res) => {
           {
             id: business._id,
             businessEmail: business.businessEmail,
+            businessPlanID: business.businessPlanID,
           },
           JWT_SECRET,
           { expiresIn: 3600 },
@@ -174,6 +176,7 @@ export const businessRegister = async (req, res) => {
                 businessCategory: business.businessCategory,
                 businessEmail: business.businessEmail,
                 businessPhone: business.businessPhone,
+                businessPlan: business.businessPlanID,
                 businessAddress: business.businessAddress,
                 businessCountry: business.businessCountry,
                 businessIlce: business.businessIlce,
