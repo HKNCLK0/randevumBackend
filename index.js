@@ -47,7 +47,9 @@ mongoose.connect(
 );
 
 app.get("/", middleware, (req, res) => {
-  res.status(400).json({ message: "Hello Randevum Backend" });
+  res.clearCookie("deneme23");
+
+  res.status(200).json({ message: "Hello Randevum Backend" });
 });
 
 //Category
