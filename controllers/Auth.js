@@ -26,17 +26,17 @@ export const loginWithEmailAndPassword = (req, res) => {
     if (!user) return res.status(400).json({ msg: "User does not exist" });
 
     //Validate password
-    bcrypt.compare(password, user.password).then((isMatch) => {
+    bcrypt.compare(password, user.userPassword).then((isMatch) => {
       if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
       jwt.sign(
         {
           id: user._id,
-          userEmail: user.email,
-          userName: user.name,
-          userSurname: user.surname,
-          userPhone: user.phone,
-          userEmailVerification: user.userVerification,
-          userPhoneVerification: user.phoneVerification,
+          userEmail: user.userEmail,
+          userName: user.userName,
+          userSurname: user.userPassword,
+          userPhone: user.userPhone,
+          userEmailVerification: user.userEmailVerification,
+          userPhoneVerification: user.userPhoneVerification,
         },
         JWT_SECRET,
         { expiresIn: "30m" },
@@ -46,12 +46,12 @@ export const loginWithEmailAndPassword = (req, res) => {
             user: {
               token,
               id: user._id,
-              userEmail: user.email,
-              userName: user.name,
-              userSurname: user.surname,
-              userPhone: user.phone,
-              userEmailVerification: user.userVerification,
-              userPhoneVerification: user.phoneVerification,
+              userEmail: user.userEmail,
+              userName: user.userName,
+              userSurname: user.userPassword,
+              userPhone: user.userPhone,
+              userEmailVerification: user.userEmailVerification,
+              userPhoneVerification: user.userPhoneVerification,
             },
           });
         }
@@ -61,34 +61,48 @@ export const loginWithEmailAndPassword = (req, res) => {
 };
 
 export const registerWithEmailAndPassword = async (req, res) => {
-  const { name, surname, email, password, phone, KVKK, announcement } =
-    req.body;
+  const {
+    userName,
+    userSurname,
+    userEmail,
+    userPassword,
+    userPhone,
+    KVKK,
+    announcement,
+  } = req.body;
   //Check for existing user
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ userEmail: userEmail });
   if (user) {
     res.status(400).json("Bu E-Posta Adresi Kullanılamaz!");
   } else {
-    if (!name || !surname || !email || !password || !phone || !KVKK) {
+    if (
+      !userName ||
+      !userSurname ||
+      !userEmail ||
+      !userPassword ||
+      !userPhone ||
+      !KVKK
+    ) {
       res.status(400).json("please check all fields");
     } else {
       const newUser = await User.create({
-        name,
-        surname,
-        email,
-        password,
-        phone,
+        userName,
+        userSurname,
+        userEmail,
+        userPassword,
+        userPhone,
         KVKK,
         announcement,
       });
 
       //Generate salt & hashed password
       bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
+        bcrypt.hash(newUser.userPassword, salt, (err, hash) => {
           if (err) throw err;
-          newUser.password = hash;
+          newUser.userPassword = hash;
           newUser.save().then((user) => {
             const msg = {
-              to: `${user.email}`, // Change to your recipient
+              to: `${user.userEmail}`, // Change to your recipient
               from: "noreply@em492.randevum.tech", // Change to your verified sender
               subject: "Randevum'a Hoşgeldin",
               text: "Randevum'a Hoşgeldin",
@@ -105,12 +119,12 @@ export const registerWithEmailAndPassword = async (req, res) => {
             jwt.sign(
               {
                 id: user._id,
-                userEmail: user.email,
-                userName: user.name,
-                userSurname: user.surname,
-                userPhone: user.phone,
-                userEmailVerification: user.userVerification,
-                userPhoneVerification: user.phoneVerification,
+                userEmail: user.userEmail,
+                userName: user.userName,
+                userSurname: user.userSurname,
+                userPhone: user.userPhone,
+                userEmailVerification: user.userEmailVerification,
+                userPhoneVerification: user.userPhoneVerification,
               },
               JWT_SECRET,
               { expiresIn: 3600 },
@@ -118,15 +132,6 @@ export const registerWithEmailAndPassword = async (req, res) => {
                 if (err) throw err;
                 res.json({
                   token,
-                  user: {
-                    id: user._id,
-                    userEmail: user.email,
-                    userName: user.name,
-                    userSurname: user.surname,
-                    userPhone: user.phone,
-                    userEmailVerification: user.userVerification,
-                    userPhoneVerification: user.phoneVerification,
-                  },
                   status: "ok",
                 });
               }
@@ -145,10 +150,10 @@ export const sendVerificationEmail = (req, res) => {
     if (!user) {
       res.status(422).json({ err: "user dont exist with that email" });
     } else {
-      user.verificationCode = code;
+      user.emailVerificationCode = code;
       user.save().then((result) => {
         const msg = {
-          to: `${user.email}`, // Change to your recipient
+          to: `${user.userEmail}`, // Change to your recipient
           from: "noreply@em492.randevum.tech", // Change to your verified sender
           subject: "E-posta'nı onayla",
           text: "E-posta'nı onayla",
@@ -173,8 +178,9 @@ export const sendVerificationEmail = (req, res) => {
 export const checkVerifyCode = async (req, res) => {
   const { verificationCode, userID } = req.body;
   const user = await User.findOne({ _id: userID });
-  if (user.verificationCode === verificationCode) {
-    user.userVerification = true;
+  if (user.emailVerificationCode === verificationCode) {
+    user.userEmailVerification = true;
+    //TODO:New User Denenecek Ve Silinecek
     const newUser = user.save();
     res.status(200).json({ status: "ok" });
   } else {
@@ -195,7 +201,7 @@ export const sendVerificationSMS = async (req, res) => {
       user.save().then((result) => {
         client.messages
           .create({
-            to: user.phone,
+            to: user.userPhone,
             from: "+12183947229",
             body: `Numaranızı Doğrulamak İçin Kodunuz : ${code}`,
           })
@@ -210,10 +216,10 @@ export const checkSMScode = async (req, res) => {
   const { smsCode, userID } = req.body;
   const user = await User.findOne({ _id: userID });
   if (user.smsVerificationCode === smsCode) {
-    user.phoneVerification = true;
+    user.userPhoneVerification = true;
     user
       .save()
-      .then((message) => res.status(200).json("Telefon Numarası Doğrulandı"))
+      .then(() => res.status(200).json("Telefon Numarası Doğrulandı"))
       .catch((err) => res.status(400).json(err));
   } else {
     res.status(404).json("Hatalı Doğrulama Kodu");
