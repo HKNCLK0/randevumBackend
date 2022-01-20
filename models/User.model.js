@@ -1,26 +1,26 @@
 import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema({
-  name: String,
-  surname: String,
-  email: String,
-  password: String,
-  phone: String,
-  birthDate: Date,
-  address: String,
-  district: String,
-  province: String,
+  userName: String,
+  userSurname: String,
+  userEmail: String,
+  userPassword: String,
+  userPhone: String,
+  userBirthDate: Date,
+  userAddress: String,
+  userDistrict: String,
+  userProvince: String,
   checkedKVKK: Boolean,
   checkedAnnouncement: Boolean,
-  userVerification: {
+  userEmailVerification: {
     type: Boolean,
     default: false,
   },
   resetToken: String,
   expireToken: Date,
-  verificationCode: String,
+  emailVerificationCode: String,
   smsVerificationCode: String,
-  phoneVerification: {
+  userPhoneVerification: {
     type: Boolean,
     default: false,
   },

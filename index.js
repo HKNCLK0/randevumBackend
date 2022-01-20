@@ -47,8 +47,6 @@ mongoose.connect(
 );
 
 app.get("/", middleware, (req, res) => {
-  res.clearCookie("deneme23");
-
   res.status(200).json({ message: "Hello Randevum Backend" });
 });
 
@@ -79,6 +77,30 @@ app.use("/notifications", notificationsRouter);
 
 //Plans
 app.use("/plans", plansRouter);
+
+app.get("/mailsend", (req, res) => {
+  const userEmail = "celikhakan5255@gmail.com";
+  const userName = "Hakan";
+  const userSurname = "Çelik";
+
+  const msg = {
+    to: `${userEmail}`,
+    from: "noreply@em492.randevum.tech",
+    templateId: "d-f674df88884b4a55b968440c6d78b5f7",
+    dynamicTemplateData: {
+      userNameAndSurname: `${userName} ${userSurname}`,
+    },
+  };
+
+  sgMail
+    .send(msg)
+    .then(() => {
+      res.status(200).json("Mail Send");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+});
 
 app.listen(8001, "0.0.0.0", () => {
   console.log("Server Started");

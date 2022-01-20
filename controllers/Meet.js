@@ -55,10 +55,10 @@ export const createMeet = async (req, res) => {
       userData,
     });
     const msg = {
-      to: `${user.email}`, // Change to your recipient
+      to: `${user.userEmail}`, // Change to your recipient
       from: "noreply@em492.randevum.tech", // Change to your verified sender
       subject: "Randevu Detayları",
-      html: `Sayın ${user.name} ${user.surname}; ${date} tarihli , ${clock} saatli ${businessName} randevunuz oluşturulmuştur. Erteleme veya iptal için sitemizi ziyaret edin!`,
+      html: `Sayın ${user.userName} ${user.userSurname}; ${date} tarihli , ${clock} saatli ${businessName} randevunuz oluşturulmuştur. Erteleme veya iptal için sitemizi ziyaret edin!`,
     };
     sgMail
       .send(msg)
@@ -71,9 +71,9 @@ export const createMeet = async (req, res) => {
     const client = new twilio(accountSid, authToken);
     client.messages
       .create({
-        to: user.phone,
+        to: user.userPhone,
         from: "+12183947229",
-        body: `Sayın ${user.name} ${user.surname}; ${date} tarihli , ${clock} saatli ${businessName} randevunuz oluşturulmuştur. Erteleme veya iptal için sitemizi ziyaret edin!`,
+        body: `Sayın ${user.userName} ${user.userSurname}; ${date} tarihli , ${clock} saatli ${businessName} randevunuz oluşturulmuştur. Erteleme veya iptal için sitemizi ziyaret edin!`,
       })
       .then((message) => console.log(message.sid));
     res.status(200).json({ status: "ok", newMeet });
@@ -89,10 +89,10 @@ export const deleteMeetByID = async (req, res) => {
     const user = await User.findById({ _id: userID });
     const deletedMeet = await Meets.findByIdAndRemove({ _id: params });
     const msg = {
-      to: `${user.email}`, // Change to your recipient
+      to: `${user.userEmail}`, // Change to your recipient
       from: "noreply@em492.randevum.tech", // Change to your verified sender
       subject: "Randevu Detayları",
-      html: `Sayın ${user.name} ${user.surname}; ${deletedMeet.date} tarihli , ${deletedMeet.clock} saatli ${deletedMeet.businessName} randevunuz iptal edilmiştir.`,
+      html: `Sayın ${user.userName} ${user.userSurname}; ${deletedMeet.date} tarihli , ${deletedMeet.clock} saatli ${deletedMeet.businessName} randevunuz iptal edilmiştir.`,
     };
     sgMail
       .send(msg)
@@ -104,9 +104,9 @@ export const deleteMeetByID = async (req, res) => {
       });
     const client = new twilio(accountSid, authToken);
     client.messages.create({
-      to: user.phone,
+      to: user.userPhone,
       from: "+12183947229",
-      body: `Sayın ${user.name} ${user.surname}; ${deletedMeet.date} tarihli , ${deletedMeet.clock} saatli ${deletedMeet.businessName} randevunuz iptal edilmiştir.`,
+      body: `Sayın ${user.userName} ${user.userSurname}; ${deletedMeet.date} tarihli , ${deletedMeet.clock} saatli ${deletedMeet.businessName} randevunuz iptal edilmiştir.`,
     });
     res.status(200).json("Meet Successfully Deleted");
   } catch (error) {
