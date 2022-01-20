@@ -6,13 +6,10 @@ const userSchema = mongoose.Schema({
   userEmail: String,
   userPassword: String,
   userPhone: String,
-<<<<<<< HEAD
   userBirthDate: Date,
   userAddress: String,
   userDistrict: String,
   userProvince: String,
-=======
->>>>>>> 8fd45d734cebd1aed0ce6e417a7fa342cc208a1f
   checkedKVKK: Boolean,
   checkedAnnouncement: Boolean,
   userEmailVerification: {
