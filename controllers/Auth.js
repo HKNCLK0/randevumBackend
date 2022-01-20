@@ -26,14 +26,22 @@ export const loginWithEmailAndPassword = (req, res) => {
     if (!user) return res.status(400).json({ msg: "User does not exist" });
 
     //Validate password
+<<<<<<< HEAD
     bcrypt.compare(userPassword, user.userPassword).then((isMatch) => {
+=======
+    bcrypt.compare(password, user.userPassword).then((isMatch) => {
+>>>>>>> 8fd45d734cebd1aed0ce6e417a7fa342cc208a1f
       if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
       jwt.sign(
         {
           id: user._id,
           userEmail: user.userEmail,
           userName: user.userName,
+<<<<<<< HEAD
           userSurname: user.userSurname,
+=======
+          userSurname: user.userPassword,
+>>>>>>> 8fd45d734cebd1aed0ce6e417a7fa342cc208a1f
           userPhone: user.userPhone,
           userEmailVerification: user.userEmailVerification,
           userPhoneVerification: user.userPhoneVerification,
@@ -44,7 +52,18 @@ export const loginWithEmailAndPassword = (req, res) => {
           if (err) throw err;
           res.json({
             user: {
+<<<<<<< HEAD
               token: token,
+=======
+              token,
+              id: user._id,
+              userEmail: user.userEmail,
+              userName: user.userName,
+              userSurname: user.userPassword,
+              userPhone: user.userPhone,
+              userEmailVerification: user.userEmailVerification,
+              userPhoneVerification: user.userPhoneVerification,
+>>>>>>> 8fd45d734cebd1aed0ce6e417a7fa342cc208a1f
             },
           });
         }
@@ -95,12 +114,20 @@ export const registerWithEmailAndPassword = async (req, res) => {
           newUser.userPassword = hash;
           newUser.save().then((user) => {
             const msg = {
+<<<<<<< HEAD
               to: `${user.userEmail}`,
               from: "noreply@em492.randevum.tech",
               templateId: "d-f674df88884b4a55b968440c6d78b5f7",
               dynamicTemplateData: {
                 userNameAndSurname: `${user.userName} ${user.userSurname}`,
               },
+=======
+              to: `${user.userEmail}`, // Change to your recipient
+              from: "noreply@em492.randevum.tech", // Change to your verified sender
+              subject: "Randevum'a Hoşgeldin",
+              text: "Randevum'a Hoşgeldin",
+              html: "<strong>Randevum'a Hoşgeldin!</strong>",
+>>>>>>> 8fd45d734cebd1aed0ce6e417a7fa342cc208a1f
             };
 
             sgMail
@@ -146,7 +173,11 @@ export const sendVerificationEmail = (req, res) => {
       res.status(422).json({ err: "user dont exist with that email" });
     } else {
       user.emailVerificationCode = code;
+<<<<<<< HEAD
       user.save().then(() => {
+=======
+      user.save().then((result) => {
+>>>>>>> 8fd45d734cebd1aed0ce6e417a7fa342cc208a1f
         const msg = {
           to: `${user.userEmail}`, // Change to your recipient
           from: "noreply@em492.randevum.tech", // Change to your verified sender
@@ -197,7 +228,11 @@ export const sendVerificationSMS = async (req, res) => {
         client.messages
           .create({
             to: user.userPhone,
+<<<<<<< HEAD
             from: "+16067156694",
+=======
+            from: "+12183947229",
+>>>>>>> 8fd45d734cebd1aed0ce6e417a7fa342cc208a1f
             body: `Numaranızı Doğrulamak İçin Kodunuz : ${code}`,
           })
           .then((message) => res.status(200).json({ message: message.sid }))
