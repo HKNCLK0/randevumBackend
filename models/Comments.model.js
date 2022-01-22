@@ -4,7 +4,7 @@ const commentsSchema = mongoose.Schema({
   businessID: String,
   commentPoint: String,
   commentText: String,
-  createdAt: { type: Date, default: () => Date.now() + 10800000 },
+  createdAt: String,
 });
 
 const Comment = mongoose.model("Comments", commentsSchema);

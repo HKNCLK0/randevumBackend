@@ -1,12 +1,14 @@
 import Comment from "../models/Comments.model.js";
 
 export const createComment = async (req, res) => {
+  const date = new Date();
   const { businessID, commentPoint, commentText } = req.body;
   try {
     const comment = await Comment.create({
       businessID,
       commentPoint,
       commentText,
+      createdAt: date.toLocaleDateString(),
     });
     res.status(201).json(comment);
   } catch (error) {
