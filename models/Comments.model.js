@@ -4,6 +4,7 @@ const commentsSchema = mongoose.Schema({
   businessID: String,
   commentPoint: String,
   commentText: String,
+  creatorName: String,
   createdAt: String,
 });
 
