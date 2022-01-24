@@ -16,15 +16,15 @@ export const passwordReset = async (req, res) => {
       console.log(err);
     }
     const token = buffer.toString("hex");
-    User.findOne({ email: email }).then((user) => {
+    User.findOne({ userEmail: email }).then((user) => {
       if (!user) {
         return res.status(422).json({ error: "User dont exists that email" });
       }
       user.resetToken = token;
       user.expireToken = Date.now() + 36000000;
-      user.save().then((result) => {
+      user.save().then(() => {
         const msg = {
-          to: `${email}`, // Change to your recipient
+          to: `${user.userEmail}`, // Change to your recipient
           from: "noreply@em492.randevum.tech", // Change to your verified sender
           subject: "Şifreni Sıfırla",
           text: "Şifreni Sıfırla",
@@ -71,7 +71,7 @@ export const newPassword = async (req, res) => {
       res.status(404).json({ error: "Geçersiz Token Lütfen Tekrar Deneyin" });
     }
     await bcrypt.hash(newPassword, 10).then((hashedNewPassword) => {
-      user.password = hashedNewPassword;
+      user.userPassword = hashedNewPassword;
       user.resetToken = undefined;
       user.expireToken = undefined;
       user.save().then((result) => {

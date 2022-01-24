@@ -4,8 +4,9 @@ import jwt from "jsonwebtoken";
 import { generateCode } from "../components/createRandomCode.js";
 import dotenv from "dotenv";
 dotenv.config();
-import User from "../models/User.model.js";
 import twilio from "twilio";
+
+import User from "../models/User.model.js";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const JWT_SECRET = process.env.JWT;
