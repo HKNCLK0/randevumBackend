@@ -81,8 +81,6 @@ app.use("/plans", plansRouter);
 
 const JWT = process.env.JWT;
 
-import cookieSession from "cookie-session";
-
 app.get("/deneme/data", middleware, (req, res) => {
   const token = req.token;
   try {
