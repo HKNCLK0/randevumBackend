@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import sgMail from "@sendgrid/mail";
+import jwt from "jsonwebtoken";
 
 //TODO:Bearer Token Yapılacak
 
@@ -78,28 +79,17 @@ app.use("/notifications", notificationsRouter);
 //Plans
 app.use("/plans", plansRouter);
 
-app.get("/mailsend", (req, res) => {
-  const userEmail = "celikhakan5255@gmail.com";
-  const userName = "Hakan";
-  const userSurname = "Çelik";
+const JWT = process.env.JWT;
 
-  const msg = {
-    to: `${userEmail}`,
-    from: "noreply@em492.randevum.tech",
-    templateId: "d-f674df88884b4a55b968440c6d78b5f7",
-    dynamicTemplateData: {
-      userNameAndSurname: `${userName} ${userSurname}`,
-    },
-  };
+import cookieSession from "cookie-session";
 
-  sgMail
-    .send(msg)
-    .then(() => {
-      res.status(200).json("Mail Send");
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+app.get("/deneme/data", middleware, (req, res) => {
+  const token = req.token;
+  try {
+    res.send(token);
+  } catch (error) {
+    res.status(403).json("Hata");
+  }
 });
 
 app.listen(8001, "0.0.0.0", () => {

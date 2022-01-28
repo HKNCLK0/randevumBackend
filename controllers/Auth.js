@@ -38,6 +38,7 @@ export const loginWithEmailAndPassword = (req, res) => {
           userPhone: user.userPhone,
           userEmailVerification: user.userEmailVerification,
           userPhoneVerification: user.userPhoneVerification,
+          userProfilePicture: user.userProfilePicture,
         },
         JWT_SECRET,
         { expiresIn: "30m" },
@@ -103,7 +104,6 @@ export const registerWithEmailAndPassword = async (req, res) => {
                 userNameAndSurname: `${user.userName} ${user.userSurname}`,
               },
             };
-
             sgMail
               .send(msg)
               .then(() => {

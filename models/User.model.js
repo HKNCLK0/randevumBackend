@@ -12,6 +12,11 @@ const userSchema = mongoose.Schema({
   userProvince: String,
   checkedKVKK: Boolean,
   checkedAnnouncement: Boolean,
+  userProfilePicture: {
+    type: String,
+    default:
+      "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+  },
   userEmailVerification: {
     type: Boolean,
     default: false,
