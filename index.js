@@ -82,9 +82,9 @@ app.use("/plans", plansRouter);
 const JWT = process.env.JWT;
 
 app.get("/deneme/data", middleware, (req, res) => {
-  const token = req.token;
+  const userData = req.user;
   try {
-    res.send(token);
+    res.send(userData);
   } catch (error) {
     res.status(403).json("Hata");
   }
