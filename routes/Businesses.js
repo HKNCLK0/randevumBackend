@@ -6,6 +6,8 @@ import {
   businessLogin,
   businessRegister,
   getBusinessesByCategoryName,
+  setMeetDates,
+  setMeetTimes,
 } from "../controllers/Businesses.js";
 
 const router = express.Router();
@@ -14,6 +16,8 @@ const router = express.Router();
 router.get("/", getAllBusinesses);
 router.get("/:id", getBusinessesByID);
 router.post("/", getBusinessesByCategoryName);
+router.put("/setMeetsDates", setMeetDates);
+router.put("/setMeetsTimes", setMeetTimes);
 
 //Business Auth Router
 

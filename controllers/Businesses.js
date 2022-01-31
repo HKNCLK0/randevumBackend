@@ -48,7 +48,6 @@ export const getBusinessesByID = async (req, res) => {
       businessName: business.businessName,
       businessCategory: business.businessCategory,
       businessEmail: business.businessEmail,
-      businessEmail: business.businessEmail,
       businessAddress: business.businessAddress,
       businessCountry: business.businessCountry,
       businessPlan: business.businessPlanID,
@@ -205,5 +204,41 @@ export const businessRegister = async (req, res) => {
         });
       });
     }
+  }
+};
+
+export const setMeetDates = async (req, res) => {
+  const { businessID, meetDates } = req.body;
+  try {
+    await Businesses.findById({ _id: businessID }).then((business) => {
+      if (!business) {
+        res.status(404).json("İşletme Bulunamadı");
+      } else {
+        business.businessMeetDates = meetDates;
+        business
+          .save()
+          .then((newBusiness) => res.status(200).json(newBusiness));
+      }
+    });
+  } catch (error) {
+    res.status(400).json("SetMeetDates Error");
+  }
+};
+
+export const setMeetTimes = async (req, res) => {
+  const { businessID, meetTimes } = req.body;
+  try {
+    await Businesses.findById({ _id: businessID }).then((business) => {
+      if (!business) {
+        res.status(404).json("İşletme Bulunamadı");
+      } else {
+        business.businessMeetTimes = meetTimes;
+        business
+          .save()
+          .then((newBusiness) => res.status(200).json(newBusiness));
+      }
+    });
+  } catch (error) {
+    res.status(400).json("SetMeetTime Error");
   }
 };
