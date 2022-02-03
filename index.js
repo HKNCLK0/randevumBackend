@@ -90,7 +90,7 @@ app.get("/deneme/data", middleware, (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.listen(() => {
   console.log("Server Started");
 });
 
