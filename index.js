@@ -79,8 +79,6 @@ app.use("/notifications", notificationsRouter);
 //Plans
 app.use("/plans", plansRouter);
 
-const JWT = process.env.JWT;
-
 app.get("/deneme/data", middleware, (req, res) => {
   const userData = req.user;
   try {
@@ -90,7 +88,7 @@ app.get("/deneme/data", middleware, (req, res) => {
   }
 });
 
-app.listen(() => {
+app.listen(3000, () => {
   console.log("Server Started");
 });
 
