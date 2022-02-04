@@ -33,15 +33,15 @@ export const loginWithEmailAndPassword = (req, res) => {
         {
           id: user._id,
           userEmail: user.userEmail,
-          userName: user.userName,
+          /*userName: user.userName,
           userSurname: user.userSurname,
           userPhone: user.userPhone,
           userEmailVerification: user.userEmailVerification,
           userPhoneVerification: user.userPhoneVerification,
-          userProfilePicture: user.userProfilePicture,
+          userProfilePicture: user.userProfilePicture,*/
         },
         JWT_SECRET,
-        { expiresIn: "30m" },
+        { expiresIn: 86000 },
         (err, token) => {
           if (err) throw err;
           res.json({

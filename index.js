@@ -58,7 +58,7 @@ app.use("/category", categoryRoute);
 app.use("/user", userRoute);
 
 //Meets
-app.use("/meets", meetRoute);
+app.use("/meets", middleware, meetRoute);
 
 app.use("/businesses", businessesRouter);
 // Login and register
@@ -88,7 +88,8 @@ app.get("/deneme/data", middleware, (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+//Githuba Atılmadan Port Değişecek,IP Silinecek
+app.listen(8001, "0.0.0.0", () => {
   console.log("Server Started");
 });
 
