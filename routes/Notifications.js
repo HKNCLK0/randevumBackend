@@ -5,10 +5,11 @@ import {
   createNotifications,
   deleteNotifications,
 } from "../controllers/Notifications.js";
+import { middleware } from "../middleware/Middleware.js";
 
 const router = express.Router();
 
-router.get("/:userID", getNotificationsByID);
+router.get("/", middleware, getNotificationsByID);
 router.post("/", createNotifications);
 router.delete("/:notificationID", deleteNotifications);
 

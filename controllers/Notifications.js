@@ -1,7 +1,7 @@
 import Notifications from "../models/Notifications.model.js";
 
 export const getNotificationsByID = async (req, res) => {
-  const { userID } = req.params;
+  const userID = req.user.id;
   try {
     Notifications.find({ userID: userID }).then((response) =>
       res.status(200).json(response)
