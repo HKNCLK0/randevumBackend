@@ -5,11 +5,12 @@ import {
   getCategory,
   getCategoryByID,
 } from "../controllers/Category.js";
+import { middleware } from "../middleware/Middleware.js";
 
 const router = express.Router();
 
 router.get("/", getCategory);
 router.get("/:id", getCategoryByID);
-router.post("/", createCategory);
+router.post("/", middleware, createCategory);
 
 export default router;
