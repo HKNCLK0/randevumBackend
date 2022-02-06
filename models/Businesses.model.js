@@ -7,7 +7,7 @@ const businessesModel = mongoose.Schema({
   businessPassword: String,
   businessPhone: String,
   businessAddress: String,
-  businessPlanID: String,
+  customerStripeID: String,
   businessCountry: String,
   businessIlce: String,
   businessImage: String,
