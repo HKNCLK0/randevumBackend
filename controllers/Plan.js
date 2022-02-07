@@ -17,11 +17,7 @@ export const createSession = async (req, res) => {
     {
       mode: "subscription",
       payment_method_types: ["card"],
-      discounts: [
-        {
-          coupon: "{{COUPON_ID}}",
-        },
-      ],
+
       line_items: [
         {
           price: priceID,
@@ -46,7 +42,7 @@ export const getBusinessLevel = async (req, res) => {
 
   const subscriptions = await stripe.subscriptions.list(
     {
-      customer: "cus_L6jJZGzU6VhdWQ",
+      customer: business.customerStripeID,
       status: "all",
       expand: ["data.default_payment_method"],
     },
@@ -70,14 +66,6 @@ export const createPortal = async (req, res) => {
   });
 
   res.json(portalSession);
-};
-
-export const updateProduct = async (req, res) => {
-  const product = await stripe.products.update("prod_L6L7Dhmqypul2m", {
-    name: "Professional",
-  });
-
-  res.json(product);
 };
 
 export const getCustomerByID = async (req, res) => {
