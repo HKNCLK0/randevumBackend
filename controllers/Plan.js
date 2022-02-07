@@ -11,12 +11,17 @@ export const getPlans = async (req, res) => {
 };
 
 export const createSession = async (req, res) => {
-  const stripeCustomerID = req.business.stripeCustomerID;
+  const stripeCustomerID = req.business.customerStripeID;
   const { priceID } = req.body;
   const session = await stripe.checkout.sessions.create(
     {
       mode: "subscription",
       payment_method_types: ["card"],
+      discounts: [
+        {
+          coupon: "{{COUPON_ID}}",
+        },
+      ],
       line_items: [
         {
           price: priceID,
@@ -41,7 +46,7 @@ export const getBusinessLevel = async (req, res) => {
 
   const subscriptions = await stripe.subscriptions.list(
     {
-      customer: business.customerStripeID,
+      customer: "cus_L6jJZGzU6VhdWQ",
       status: "all",
       expand: ["data.default_payment_method"],
     },
@@ -49,9 +54,22 @@ export const getBusinessLevel = async (req, res) => {
       apiKey: process.env.STRIPE_SECRET_KEY,
     }
   );
-  business.productID = subscriptions.data[0].items.data[0].plan.product;
-  business.save();
-  res.json(subscriptions);
+  const plan = await stripe.products.retrieve(
+    subscriptions.data[0].plan.product
+  );
+  res.json(plan);
+};
+
+export const createPortal = async (req, res) => {
+  const stripeCustomerID = req.business.customerStripeID;
+  const returnUrl = "http://localhost:3000";
+
+  const portalSession = await stripe.billingPortal.sessions.create({
+    customer: "cus_L6kbxKg0w5xnD0",
+    return_url: returnUrl,
+  });
+
+  res.json(portalSession);
 };
 
 export const updateProduct = async (req, res) => {
@@ -60,4 +78,12 @@ export const updateProduct = async (req, res) => {
   });
 
   res.json(product);
+};
+
+export const getCustomerByID = async (req, res) => {
+  const id = req.business.customerStripeID;
+
+  const customer = await stripe.customers.retrieve(id);
+
+  res.json(customer);
 };
