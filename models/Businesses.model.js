@@ -8,6 +8,7 @@ const businessesModel = mongoose.Schema({
   businessPhone: String,
   businessAddress: String,
   customerStripeID: String,
+  productID: String,
   businessCountry: String,
   businessIlce: String,
   businessImage: String,

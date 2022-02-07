@@ -19,7 +19,7 @@ import supportRouter from "./routes/Support.js";
 import commentRouter from "./routes/Comments.js";
 import notificationsRouter from "./routes/Notifications.js";
 import plansRouter from "./routes/Plan.js";
-import { middleware } from "./middleware/Middleware.js";
+import { checkUserAuth } from "./middleware/Middleware.js";
 
 const app = express();
 dotenv.config();
@@ -47,7 +47,7 @@ mongoose.connect(
   console.log("Connected to MongoDB!!!")
 );
 
-app.get("/", middleware, (req, res) => {
+app.get("/", checkUserAuth, (req, res) => {
   res.status(200).json({ message: "Hello Randevum Backend" });
 });
 
@@ -79,7 +79,7 @@ app.use("/notifications", notificationsRouter);
 //Plans
 app.use("/plans", plansRouter);
 
-app.get("/userData", middleware, (req, res) => {
+app.get("/userData", checkUserAuth, (req, res) => {
   const userData = req.user;
   try {
     res.send(userData);
@@ -116,7 +116,7 @@ const supportRouter = require("./routes/Support.js");
 const commentRouter = require("./routes/Comments.js");
 const notificationsRouter = require("./routes/Notifications.js");
 const plansRouter = require("./routes/Plan.js");
-const { middleware } = require("./middleware/Middleware.js");
+const { checkUserAuth } = require("./checkUserAuth/checkUserAuth.js");
 
 const app = express();
 dotenv.config();
@@ -144,7 +144,7 @@ mongoose.connect(
   console.log("Connected to MongoDB!!!")
 );
 
-app.get("/", middleware, (req, res) => {
+app.get("/", checkUserAuth, (req, res) => {
   res.status(200).json({ message: "Hello Randevum Backend" });
 });
 
@@ -178,7 +178,7 @@ app.use("/plans", plansRouter);
 
 const JWT = process.env.JWT;
 
-app.get("/deneme/data", middleware, (req, res) => {
+app.get("/deneme/data", checkUserAuth, (req, res) => {
   const userData = req.user;
   try {
     res.send(userData);

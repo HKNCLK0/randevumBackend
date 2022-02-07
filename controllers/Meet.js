@@ -33,9 +33,9 @@ export const getMeetsByID = async (req, res) => {
 };
 
 export const getMeetsByBusinessID = async (req, res) => {
+  const businessID = req.business.id;
   try {
-    const params = req.params.id;
-    const meetFindByID = await Meets.find({ businessID: params });
+    const meetFindByID = await Meets.find({ businessID: businessID });
     res.status(200).json(meetFindByID);
   } catch (error) {
     res.status(400).json({ error: error });

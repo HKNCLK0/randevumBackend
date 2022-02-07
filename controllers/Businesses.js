@@ -5,6 +5,9 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 
+import Stripe from "stripe";
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 const JWT_SECRET = process.env.JWT;
 
 /*export const createBusinesses = async (req, res) => {
@@ -104,18 +107,14 @@ export const businessLogin = (req, res) => {
           {
             id: business._id,
             businessEmail: business.businessEmail,
-            businessPlanID: business.businessPlanID,
+            customerStripeID: business.customerStripeID,
           },
           JWT_SECRET,
           { expiresIn: 3600 },
           (err, token) => {
             if (err) throw err;
             res.json({
-              business: {
-                token,
-                id: business._id,
-                businessEmail: business.businessEmail,
-              },
+              token,
             });
           }
         );
@@ -151,12 +150,21 @@ export const businessRegister = async (req, res) => {
     ) {
       res.status(400).json("please check all fields");
     } else {
+      const customer = await stripe.customers.create(
+        {
+          email: businessEmail,
+        },
+        {
+          apiKey: process.env.STRIPE_SECRET_KEY,
+        }
+      );
       const newBusiness = await Businesses.create({
         businessName,
         businessCategory,
         businessEmail,
         businessPassword,
         businessPhone,
+        customerStripeID: customer.id,
         businessAddress,
         businessCountry,
         businessIlce,
@@ -208,7 +216,8 @@ export const businessRegister = async (req, res) => {
 };
 
 export const setMeetDates = async (req, res) => {
-  const { businessID, meetDates } = req.body;
+  const businessID = req.business.id;
+  const { meetDates } = req.body;
   try {
     await Businesses.findById({ _id: businessID }).then((business) => {
       if (!business) {
@@ -226,7 +235,8 @@ export const setMeetDates = async (req, res) => {
 };
 
 export const setMeetTimes = async (req, res) => {
-  const { businessID, meetTimes } = req.body;
+  const businessID = req.business.id;
+  const { meetTimes } = req.body;
   try {
     await Businesses.findById({ _id: businessID }).then((business) => {
       if (!business) {

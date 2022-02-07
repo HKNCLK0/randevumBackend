@@ -7,17 +7,17 @@ import {
   getMeetsByBusinessID,
   getMeetByMeetID,
 } from "../controllers/Meet.js";
-import { middleware } from "../middleware/Middleware.js";
+import { checkBusinessAuth, checkUserAuth } from "../middleware/Middleware.js";
 
 const router = express.Router();
 
 //http://URL:PORT/meets
 
 //router.get("/", getMeets);
-router.get("/", middleware, getMeetsByID);
-router.get("/business/:id", middleware, getMeetsByBusinessID);
-router.post("/", middleware, createMeet);
-router.delete("/:id", middleware, deleteMeetByID);
+router.get("/", checkUserAuth, getMeetsByID);
+router.get("/business", checkBusinessAuth, getMeetsByBusinessID);
+router.post("/", checkUserAuth, createMeet);
+router.delete("/:id", checkUserAuth, deleteMeetByID);
 router.get("/getByMeetID/:id", getMeetByMeetID);
 
 export default router;
