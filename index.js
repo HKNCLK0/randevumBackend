@@ -3,7 +3,6 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import sgMail from "@sendgrid/mail";
-import jwt from "jsonwebtoken";
 
 //TODO:Bearer Token Yapılacak
 
@@ -19,6 +18,8 @@ import supportRouter from "./routes/Support.js";
 import commentRouter from "./routes/Comments.js";
 import notificationsRouter from "./routes/Notifications.js";
 import plansRouter from "./routes/Plan.js";
+import panelRouter from "./routes/Panel.js";
+
 import { checkUserAuth } from "./middleware/Middleware.js";
 
 const app = express();
@@ -78,6 +79,9 @@ app.use("/notifications", notificationsRouter);
 
 //Plans
 app.use("/plans", plansRouter);
+
+//Business Panel
+app.use("/panel", panelRouter);
 
 app.get("/userData", checkUserAuth, (req, res) => {
   const userData = req.user;

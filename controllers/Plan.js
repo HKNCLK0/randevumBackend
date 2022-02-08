@@ -50,6 +50,8 @@ export const getBusinessLevel = async (req, res) => {
       apiKey: process.env.STRIPE_SECRET_KEY,
     }
   );
+  if (!subscriptions.data.length) return res.json("Abonelik Yok");
+
   const plan = await stripe.products.retrieve(
     subscriptions.data[0].plan.product
   );
@@ -57,11 +59,13 @@ export const getBusinessLevel = async (req, res) => {
 };
 
 export const createPortal = async (req, res) => {
-  const stripeCustomerID = req.business.customerStripeID;
+  const business = await Businesses.findOne({
+    businessEmail: req.business.businessEmail,
+  });
   const returnUrl = "http://localhost:3000";
 
   const portalSession = await stripe.billingPortal.sessions.create({
-    customer: "cus_L6kbxKg0w5xnD0",
+    customer: business.customerStripeID,
     return_url: returnUrl,
   });
 
