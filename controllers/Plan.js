@@ -1,12 +1,16 @@
 import Stripe from "stripe";
 import Businesses from "../models/Businesses.model.js";
+import Panel from "../models/Panel.model.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const getPlans = async (req, res) => {
-  const plans = await stripe.prices.list({
-    apiKey: process.env.STRIPE_SECRET_KEY,
-  });
+  const plans = await stripe.prices.list(
+    { expand: ["data.product"] },
+    {
+      apiKey: process.env.STRIPE_SECRET_KEY,
+    }
+  );
   return res.json(plans);
 };
 
@@ -50,12 +54,22 @@ export const getBusinessLevel = async (req, res) => {
       apiKey: process.env.STRIPE_SECRET_KEY,
     }
   );
-  if (!subscriptions.data.length) return res.json("Abonelik Yok");
+  if (!subscriptions.data.length)
+    return res.status(404).json("Subscription Not Found");
 
   const plan = await stripe.products.retrieve(
     subscriptions.data[0].plan.product
   );
-  res.json(plan);
+
+  if (plan.name == "Baslangic") {
+    await Panel.find({ panelAccess: "Standart" })
+      .then((panel) => res.json({ panel, plan }))
+      .catch(() => res.json("Get Panel Error"));
+  } else if (plan.name == "Profesyonel") {
+    await Panel.find({ panelAccess: { $in: ["Standart", "Profesyonel"] } })
+      .then((panel) => res.json({ panel, plan }))
+      .catch(() => res.json("Get Panel Error"));
+  }
 };
 
 export const createPortal = async (req, res) => {
