@@ -60,7 +60,8 @@ export const getBusinessLevel = async (req, res) => {
   const plan = await stripe.products.retrieve(
     subscriptions.data[0].plan.product
   );
-
+  //TODO:Burası Düzeltilecek
+  //BUG:Burası yeni kullanıcıda leveli vermiyor!
   if (plan.name == "Baslangic") {
     await Panel.find({ panelAccess: "Standart" })
       .then((panel) => res.json({ panel, plan }))
