@@ -2,6 +2,9 @@ import Businesses from "../models/Businesses.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+import sgMail from "@sendgrid/mail";
+
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -9,6 +12,8 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const JWT_SECRET = process.env.JWT;
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 /*export const createBusinesses = async (req, res) => {
   const {
@@ -41,6 +46,11 @@ const JWT_SECRET = process.env.JWT;
     res.status(400).json({ error: error });
   }
 };*/
+
+export const getBusiness = async(req,res) => {
+  const businessID = req.business.id
+  await Businesses.find({_id:businessID}).then((business) => res.json(business))
+}
 
 export const getBusinessesByID = async (req, res) => {
   const params = req.params.id;
@@ -169,7 +179,22 @@ export const businessRegister = async (req, res) => {
         businessCountry,
         businessIlce,
       });
-
+      const msg = {
+        to: `${businessEmail}`,
+        from: "noreply@em492.randevum.tech",
+        templateId: "d-f674df88884b4a55b968440c6d78b5f7",
+        dynamicTemplateData: {
+          userNameAndSurname: `${businessName}`,
+        },
+      };
+      sgMail
+        .send(msg)
+        .then(() => {
+          res.status(200).json("Mail Send");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
       //Generate salt & hashed businessPassword
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newBusiness.businessPassword, salt, (err, hash) => {
