@@ -11,6 +11,6 @@ const router = express.Router();
 
 router.get("/", getCategory);
 router.get("/:id", getCategoryByID);
-router.post("/", checkUserAuth, createCategory);
+router.post("/", createCategory);
 
 export default router;

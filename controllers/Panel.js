@@ -1,14 +1,14 @@
 import Panel from "../models/Panel.model.js";
 
 export const getPanels = async (req, res) => {
-  const userPanelAccess = "Standart";
+  const userPanelAccess = "Baslangic";
 
-  if (userPanelAccess == "Standart") {
-    await Panel.find({ panelAccess: "Standart" })
+  if (userPanelAccess == "Baslangic") {
+    await Panel.find({ panelAccess: "Baslangic" })
       .then((panel) => res.json(panel))
       .catch(() => res.json("Get Panel Error"));
   } else if (userPanelAccess == "Profesyonel") {
-    await Panel.find({ panelAccess: { $in: ["Standart", "Profesyonel"] } })
+    await Panel.find({ panelAccess: { $in: ["Baslangic", "Profesyonel"] } })
       .then((panel) => res.json(panel))
       .catch(() => res.json("Get Panel Error"));
   }
