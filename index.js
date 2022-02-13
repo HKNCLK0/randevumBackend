@@ -93,6 +93,6 @@ app.get("/userData", checkUserAuth, (req, res) => {
 });
 
 //Githuba Atılmadan Port Değişecek,IP Silinecek
-app.listen(() => {
+app.listen(8001, "0.0.0.0", () => {
   console.log("Server Started");
 });

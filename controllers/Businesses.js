@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 
 import sgMail from "@sendgrid/mail";
 
-
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -47,10 +46,12 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   }
 };*/
 
-export const getBusiness = async(req,res) => {
-  const businessID = req.business.id
-  await Businesses.find({_id:businessID}).then((business) => res.json(business))
-}
+export const getBusiness = async (req, res) => {
+  const businessID = req.business.id;
+  await Businesses.find({ _id: businessID }).then((business) =>
+    res.json(business)
+  );
+};
 
 export const getBusinessesByID = async (req, res) => {
   const params = req.params.id;
@@ -138,6 +139,7 @@ export const businessRegister = async (req, res) => {
     businessCategory,
     businessEmail,
     businessPassword,
+    businessImage,
     businessPhone,
     businessAddress,
     businessCountry,
@@ -153,6 +155,7 @@ export const businessRegister = async (req, res) => {
       !businessCategory ||
       !businessEmail ||
       !businessPassword ||
+      !businessImage ||
       !businessPhone ||
       !businessAddress ||
       !businessCountry ||
@@ -174,6 +177,7 @@ export const businessRegister = async (req, res) => {
         businessEmail,
         businessPassword,
         businessPhone,
+        businessImage,
         customerStripeID: customer.id,
         businessAddress,
         businessCountry,

@@ -10,6 +10,7 @@ const businessesModel = mongoose.Schema({
   customerStripeID: String,
   productID: String,
   businessCountry: String,
+  businessImageURL: String,
   businessIlce: String,
   businessImage: String,
   businessMeetDates: Array,
