@@ -120,7 +120,7 @@ export const businessLogin = (req, res) => {
             customerStripeID: business.customerStripeID,
           },
           JWT_SECRET,
-          { expiresIn: 360000 },
+          { expiresIn: 86000 },
           (err, token) => {
             if (err) throw err;
             res.json({
@@ -182,9 +182,9 @@ export const businessRegister = async (req, res) => {
       const msg = {
         to: `${businessEmail}`,
         from: "noreply@em492.randevum.tech",
-        templateId: "d-f674df88884b4a55b968440c6d78b5f7",
+        templateId: "d-39c895d341594acb8eaf70c53284102c",
         dynamicTemplateData: {
-          userNameAndSurname: `${businessName}`,
+          businessName: `${businessName}`,
         },
       };
       sgMail
@@ -214,7 +214,6 @@ export const businessRegister = async (req, res) => {
                 businessIlce: business.businessIlce,
               },
               JWT_SECRET,
-              { expiresIn: 3600 },
               (err, token) => {
                 if (err) throw err;
                 res.status(200).json({
