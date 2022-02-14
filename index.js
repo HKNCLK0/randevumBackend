@@ -4,9 +4,6 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import sgMail from "@sendgrid/mail";
 
-//TODO:Bearer Token Yapılacak
-
-//TODO:User Model İsimleri Düzenlenecek
 //Routes Import
 import authRouter from "./routes/Auth.js";
 import userRoute from "./routes/User.js";
@@ -89,6 +86,30 @@ app.get("/userData", checkUserAuth, (req, res) => {
     res.send(userData);
   } catch (error) {
     res.status(403).json("Hata");
+  }
+});
+
+app.get("/mail", (req, res) => {
+  try {
+    const msg = {
+      to: `celikhakan5255@gmail.com`,
+      from: "noreply@em492.randevum.tech",
+      subject: "Şifreni Sıfırla",
+      templateId: "d-0e579b85dcf94bcf8ae634415bd7b349",
+      dynamicTemplateData: {
+        buttonURL: `https://randevum.tech/login/forgot-password`,
+      },
+    };
+    sgMail
+      .send(msg)
+      .then(() => {
+        res.status(200).json("Mail Send");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  } catch (error) {
+    res.json("asd");
   }
 });
 

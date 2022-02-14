@@ -24,13 +24,13 @@ export const passwordReset = async (req, res) => {
       user.expireToken = Date.now() + 36000000;
       user.save().then(() => {
         const msg = {
-          to: `${user.userEmail}`, // Change to your recipient
-          from: "noreply@em492.randevum.tech", // Change to your verified sender
+          to: `${user.userEmail}`,
+          from: "noreply@em492.randevum.tech",
           subject: "Şifreni Sıfırla",
-          text: "Şifreni Sıfırla",
-          html: `
-          <h1>Şifreni sıfırlamak için <a href="http://localhost:5000/login/forgot-password/${token}">buraya</a> tıkla</h1>
-          `,
+          templateId: "d-0e579b85dcf94bcf8ae634415bd7b349",
+          dynamicTemplateData: {
+            buttonURL: `https://randevum.tech/login/forgot-password/${token}`,
+          },
         };
         sgMail
           .send(msg)
