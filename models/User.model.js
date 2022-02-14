@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
   userProfilePicture: {
     type: String,
     default:
-      "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
+      "https://firebasestorage.googleapis.com/v0/b/randevum-5d873.appspot.com/o/dashboardUser.png?alt=media&token=f4349db5-cf6d-4cfa-91fb-a56ceb42b01f",
   },
   userEmailVerification: {
     type: Boolean,
