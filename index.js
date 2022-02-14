@@ -89,7 +89,7 @@ app.get("/userData", checkUserAuth, (req, res) => {
   }
 });
 
-app.get("/mail", (req, res) => {
+/*app.get("/mail", (req, res) => {
   try {
     const msg = {
       to: `celikhakan5255@gmail.com`,
@@ -111,9 +111,9 @@ app.get("/mail", (req, res) => {
   } catch (error) {
     res.json("asd");
   }
-});
+});*/
 
 //Githuba Atılmadan Port Değişecek,IP Silinecek
-app.listen(8001, "0.0.0.0", () => {
+app.listen(8080, () => {
   console.log("Server Started");
 });
