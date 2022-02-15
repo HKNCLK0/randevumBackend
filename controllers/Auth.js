@@ -103,14 +103,9 @@ export const registerWithEmailAndPassword = async (req, res) => {
                 userNameAndSurname: `${user.userName} ${user.userSurname}`,
               },
             };
-            sgMail
-              .send(msg)
-              .then(() => {
-                res.status(200).json("Mail Send");
-              })
-              .catch((error) => {
-                console.error(error);
-              });
+            sgMail.send(msg).catch((error) => {
+              console.error(error);
+            });
             jwt.sign(
               {
                 id: user._id,
@@ -159,12 +154,11 @@ export const sendVerificationEmail = (req, res) => {
         sgMail
           .send(msg)
           .then(() => {
-            console.log("Email sent");
+            res.status(200).json("Mail Send");
           })
           .catch((error) => {
             console.error(error);
           });
-        return res.status(200).json({ status: "ok" });
       });
     }
   });

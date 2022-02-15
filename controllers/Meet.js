@@ -33,9 +33,9 @@ export const getMeetsByID = async (req, res) => {
 };
 
 export const getMeetsByBusinessID = async (req, res) => {
-  const businessID = req.business.id;
+  const params = req.params.id;
   try {
-    const meetFindByID = await Meets.find({ businessID: businessID });
+    const meetFindByID = await Meets.find({ businessID: params });
     res.status(200).json(meetFindByID);
   } catch (error) {
     res.status(400).json({ error: error });
@@ -44,7 +44,8 @@ export const getMeetsByBusinessID = async (req, res) => {
 
 export const createMeet = async (req, res) => {
   const userID = req.user.id;
-  const { businessID, businessName, date, clock, userData } = req.body;
+  const { businessID, businessName, date, clock, userNameAndSurname } =
+    req.body;
   try {
     const user = await User.findOne({ _id: userID });
 
@@ -54,7 +55,7 @@ export const createMeet = async (req, res) => {
       businessName,
       date,
       clock,
-      userData,
+      userNameAndSurname,
     });
     const msg = {
       to: `${user.userEmail}`, // Change to your recipient
@@ -121,6 +122,16 @@ export const getMeetByMeetID = async (req, res) => {
     const params = req.params.id;
     const meetFindByMeetID = await Meets.findById({ _id: params });
     res.status(200).json(meetFindByMeetID);
+  } catch (error) {
+    res.status(400).json({ error: error });
+  }
+};
+
+export const getBusinessMeets = async (req, res) => {
+  const business = req.business.id;
+  try {
+    const meetFindByID = await Meets.find({ businessID: business });
+    res.status(200).json(meetFindByID);
   } catch (error) {
     res.status(400).json({ error: error });
   }

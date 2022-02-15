@@ -17,7 +17,7 @@ const router = express.Router();
 
 //router.post("/", createBusinesses);
 router.get("/", getAllBusinesses);
-router.get("/business",checkBusinessAuth,getBusiness)
+router.get("/business", checkBusinessAuth, getBusiness);
 router.get("/:id", getBusinessesByID);
 router.post("/", getBusinessesByCategoryName);
 
