@@ -9,6 +9,7 @@ import {
   setMeetDates,
   setMeetTimes,
   getBusiness,
+  setBusinessTables,
 } from "../controllers/Businesses.js";
 
 import { checkBusinessAuth } from "../middleware/Middleware.js";
@@ -24,6 +25,7 @@ router.post("/", getBusinessesByCategoryName);
 router.put("/setMeetsDates", checkBusinessAuth, setMeetDates);
 router.put("/setMeetsTimes", checkBusinessAuth, setMeetTimes);
 
+router.post("/set-table", checkBusinessAuth, setBusinessTables);
 //Business Auth Router
 router.post("/login", businessLogin);
 router.post("/register", businessRegister);
