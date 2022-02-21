@@ -16,6 +16,7 @@ import commentRouter from "./routes/Comments.js";
 import notificationsRouter from "./routes/Notifications.js";
 import plansRouter from "./routes/Plan.js";
 import panelRouter from "./routes/Panel.js";
+import tableRoute from "./routes/Table.js";
 
 import { checkUserAuth } from "./middleware/Middleware.js";
 
@@ -79,6 +80,8 @@ app.use("/plans", plansRouter);
 
 //Business Panel
 app.use("/panel", panelRouter);
+
+app.use("/tables", tableRoute);
 
 app.get("/userData", checkUserAuth, (req, res) => {
   const userData = req.user;

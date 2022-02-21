@@ -280,15 +280,3 @@ export const setMeetTimes = async (req, res) => {
     res.status(400).json("SetMeetTime Error");
   }
 };
-
-export const setBusinessTables = async (req, res) => {
-  const businessID = req.business.id;
-  const { tableArray } = req.body;
-
-  await Businesses.findOneAndUpdate(
-    { _id: businessID },
-    { $push: { businessTables: tableArray } }
-  )
-    .then((newTables) => res.json(newTables))
-    .catch(() => res.json("Table Set Error"));
-};
