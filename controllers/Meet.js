@@ -46,6 +46,7 @@ export const createMeet = async (req, res) => {
   const userID = req.user.id;
   const { businessID, businessName, date, clock, userNameAndSurname } =
     req.body;
+
   try {
     const user = await User.findOne({ _id: userID });
 

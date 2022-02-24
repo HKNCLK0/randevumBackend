@@ -18,7 +18,7 @@ export const createComment = async (req, res) => {
 };
 
 export const getCommentByBusinessID = async (req, res) => {
-  const businessID = req.business.id;
+  const { businessID } = req.params;
   try {
     const comment = await Comment.find({ businessID: businessID });
     if (!comment) {

@@ -11,6 +11,6 @@ const router = express.Router();
 //http://URL:PORT/meets
 
 router.post("/", createComment);
-router.get("/", checkBusinessAuth, getCommentByBusinessID);
+router.get("/:businessID", getCommentByBusinessID);
 
 export default router;
