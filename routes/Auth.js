@@ -14,6 +14,7 @@ import {
   sendVerificationSMS,
   googleAuth,
 } from "../controllers/Auth.js";
+import { checkUserAuth } from "../middleware/Middleware.js";
 
 const router = express.Router();
 
@@ -22,7 +23,7 @@ router.post("/register", registerWithEmailAndPassword);
 
 router.post("/google-auth", googleAuth);
 
-router.post("/verification-email", sendVerificationEmail);
+router.post("/verification-email", checkUserAuth, sendVerificationEmail);
 router.post("/verify-email-code", checkVerifyCode);
 router.post("/verify-phone-number", sendVerificationSMS);
 router.post("/check-sms-code", checkSMScode);

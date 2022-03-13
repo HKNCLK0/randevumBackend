@@ -113,7 +113,7 @@ app.post("/mobile-notification", (req, res) => {
     if (err) {
       res.status(400).json(err);
     } else {
-      res.status(200).json(response);
+      res.status(200).json("Notification Successfully Send");
     }
   });
 });

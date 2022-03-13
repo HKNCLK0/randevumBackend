@@ -139,7 +139,7 @@ export const registerWithEmailAndPassword = async (req, res) => {
 };
 
 export const sendVerificationEmail = (req, res) => {
-  const { userID } = req.body;
+  const userID = req.user.id;
   const code = generateCode();
   User.findOne({ _id: userID }).then((user) => {
     if (!user) {
