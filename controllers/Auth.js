@@ -6,6 +6,12 @@ import dotenv from "dotenv";
 dotenv.config();
 import twilio from "twilio";
 
+const GOOGLE_CLIENT_ID =
+  "559623405365-k6amv5ub6lj6hgs7jae6l0896ofu1p06.apps.googleusercontent.com";
+
+import { OAuth2Client } from "google-auth-library";
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
 import User from "../models/User.model.js";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -41,7 +47,6 @@ export const loginWithEmailAndPassword = (req, res) => {
           userProfilePicture: user.userProfilePicture,
         },
         JWT_SECRET,
-        { expiresIn: 86000 },
         (err, token) => {
           if (err) throw err;
           res.json({
@@ -213,4 +218,15 @@ export const checkSMScode = async (req, res) => {
   } else {
     res.status(404).json("Hatalı Doğrulama Kodu");
   }
+};
+
+export const googleAuth = (req, res) => {
+  const { token } = req.body;
+
+  client
+    .verifyIdToken({
+      idToken: token,
+      audience: GOOGLE_CLIENT_ID,
+    })
+    .then((result) => res.json(result));
 };

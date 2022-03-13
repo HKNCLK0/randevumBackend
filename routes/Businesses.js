@@ -11,14 +11,14 @@ import {
   getBusiness,
 } from "../controllers/Businesses.js";
 
-import { checkBusinessAuth } from "../middleware/Middleware.js";
+import { checkBusinessAuth, checkUserAuth } from "../middleware/Middleware.js";
 
 const router = express.Router();
 
 //router.post("/", createBusinesses);
 router.get("/", getAllBusinesses);
 router.get("/business", checkBusinessAuth, getBusiness);
-router.get("/:id", getBusinessesByID);
+router.get("/:id", checkUserAuth, getBusinessesByID);
 router.post("/", getBusinessesByCategoryName);
 
 router.put("/setMeetsDates", checkBusinessAuth, setMeetDates);

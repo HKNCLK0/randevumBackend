@@ -4,6 +4,12 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import sgMail from "@sendgrid/mail";
 
+import fcm from "fcm-notification";
+
+const FCM = new fcm("./randevum-5d873-firebase-adminsdk.json");
+const token =
+  "dAWhvMTDRZ6ujaYgXqj7Q7:APA91bExwkHSg--_bhBvpUR-eNcRWnMVsd4Sunsoche-13E79jp0ZxNT54xIw3tMXyZhz0sx9E68zbK1n22EOTr4ZBu8Mhm0XyEBNmkeZd8jiJ9vSTPwU-doqzJP533pgHywdqCmcdcb";
+
 //Routes Import
 import authRouter from "./routes/Auth.js";
 import userRoute from "./routes/User.js";
@@ -92,6 +98,26 @@ app.get("/userData", checkUserAuth, (req, res) => {
   }
 });
 
+//Mobile Notifications
+
+app.post("/mobile-notification", (req, res) => {
+  const message = {
+    notification: {
+      title: req.body.title,
+      body: req.body.message,
+    },
+    token: token,
+  };
+
+  FCM.send(message, function (err, response) {
+    if (err) {
+      res.status(400).json(err);
+    } else {
+      res.status(200).json(response);
+    }
+  });
+});
+
 /*app.get("/mail", (req, res) => {
   try {
     const msg = {
@@ -117,6 +143,6 @@ app.get("/userData", checkUserAuth, (req, res) => {
 });*/
 
 //Githuba Atılmadan Port Değişecek,IP Silinecek
-app.listen(8080, () => {
+app.listen(8001, "0.0.0.0", () => {
   console.log("Server Started");
 });
