@@ -7,6 +7,7 @@ import {
   getMeetsByBusinessID,
   getMeetByMeetID,
   getBusinessMeets,
+  deneme,
 } from "../controllers/Meet.js";
 import { checkBusinessAuth, checkUserAuth } from "../middleware/Middleware.js";
 
@@ -21,5 +22,6 @@ router.get("/business/:id", getMeetsByBusinessID);
 router.post("/", checkUserAuth, createMeet);
 router.delete("/:id", checkUserAuth, deleteMeetByID);
 router.get("/getByMeetID/:id", getMeetByMeetID);
+router.get("/deneme", deneme);
 
 export default router;

@@ -99,7 +99,6 @@ app.get("/userData", checkUserAuth, (req, res) => {
 });
 
 //Mobile Notifications
-
 app.post("/mobile-notification", (req, res) => {
   const message = {
     notification: {

@@ -139,9 +139,9 @@ export const registerWithEmailAndPassword = async (req, res) => {
 };
 
 export const sendVerificationEmail = (req, res) => {
-  const userID = req.user.id;
+  const userEmail = req.body.userEmail;
   const code = generateCode();
-  User.findOne({ _id: userID }).then((user) => {
+  User.findOne({ userEmail: userEmail }).then((user) => {
     if (!user) {
       res.status(422).json({ err: "user dont exist with that email" });
     } else {
@@ -170,8 +170,8 @@ export const sendVerificationEmail = (req, res) => {
 };
 
 export const checkVerifyCode = async (req, res) => {
-  const { verificationCode, userID } = req.body;
-  const user = await User.findOne({ _id: userID });
+  const { verificationCode, userEmail } = req.body;
+  const user = await User.findOne({ userEmail: userEmail });
   if (user.emailVerificationCode === verificationCode) {
     user.userEmailVerification = true;
     //TODO:New User Denenecek Ve Silinecek

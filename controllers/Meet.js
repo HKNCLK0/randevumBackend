@@ -2,6 +2,8 @@ import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv";
 import twilio from "twilio";
 
+import schedule from "node-schedule";
+
 dotenv.config();
 
 import Meets from "../models/Meets.model.js";
@@ -136,4 +138,15 @@ export const getBusinessMeets = async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error });
   }
+};
+
+//DENEME
+export const deneme = async (req, res) => {
+  await Meets.find().then((meet) => res.json(meet));
+
+  const meetTime = "0 29 0 23 3 3";
+
+  schedule.scheduleJob(meetTime, function () {
+    console.log("Her 30 Saniye");
+  });
 };
