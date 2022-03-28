@@ -1,7 +1,11 @@
 import User from "../models/User.model.js";
 
 export const getUser = (req, res) => {
-  res.send("User");
+  User.find()
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch((err) => res.status(400).json(err));
 };
 
 export const getUserByID = async (req, res) => {
