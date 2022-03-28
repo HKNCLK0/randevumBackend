@@ -20,3 +20,14 @@ export const getUserByID = async (req, res) => {
     });
   }
 };
+
+export const deleteUser = (req, res) => {
+  try {
+    const params = req.params.id;
+    User.findByIdAndDelete(params).then((user) => {
+      res.status(200).json(user);
+    });
+  } catch (error) {
+    res.status(404).json(error);
+  }
+};
