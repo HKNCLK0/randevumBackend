@@ -1,3 +1,5 @@
 .env
 
 node_modules/
+
+.randevum-5d873-firebase-adminsdk.json
