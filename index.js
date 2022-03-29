@@ -142,6 +142,6 @@ app.post("/mobile-notification", (req, res) => {
 });*/
 
 //Githuba Atılmadan Port Değişecek,IP Silinecek
-app.listen(8001, "0.0.0.0", () => {
+app.listen(8080, () => {
   console.log("Server Started");
 });
