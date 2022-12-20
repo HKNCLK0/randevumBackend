@@ -15,7 +15,7 @@ const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 import User from "../models/User.model.js";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const JWT_SECRET = process.env.JWT;
+const JWT_SECRET = "asasd12344";
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;

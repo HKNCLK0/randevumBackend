@@ -44,7 +44,7 @@ app.use(function (req, res, next) {
   next();
 });
 mongoose.connect(
-  process.env.CONNECTION_URL,
+  "mongodb+srv://admin:databaseadmin@randevum.8qblx.mongodb.net/randevum?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
